@@ -1,0 +1,19 @@
+mike.qiao@C6D7K0V6DV balanced bst cpp % g++ -std=c++11 is_balanced_final.cpp -o is_balanced_final
+./is_balanced_final
+
+Test 1: Basic working case
+Expected: true (balanced tree)
+Actual: true
+
+Test 2: Stack overflow with deep tree
+Testing deep tree...
+Overflow error: Maximum depth exceeded, possible stack overflow.
+Result: false
+
+Test 3: Integer overflow
+Testing tree with potential integer overflow...
+Result: true
+
+Test 4: Invalid pointer handling
+Testing with invalid pointer...
+zsh: segmentation fault  ./is_balanced_final

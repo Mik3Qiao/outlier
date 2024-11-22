@@ -1,4 +1,6 @@
 #include <iostream>
+#include <climits> // For INT_MAX and INT_MIN
+#include <exception> // For std::exception
 using namespace std;
 
 // Define the structure for a binary tree node
@@ -20,29 +22,52 @@ Node* createNode(int data) {
     return newNode;
 }
 
+// Function to safely delete a binary tree to prevent memory leaks
+void deleteTree(Node* root) {
+    if (root == nullptr) return;
+    deleteTree(root->left);
+    deleteTree(root->right);
+    delete root;
+}
+
 // Function to check if a binary tree is balanced and calculate its height
-int checkBalanceAndHeight(Node* root, bool& isBalanced) {
-    if (root == nullptr)
-        return 0;
+int checkBalanceAndHeight(Node* root, bool& isBalanced, int maxDepth, int currentDepth) {
+    if (root == nullptr) return 0;
 
-    int leftHeight = checkBalanceAndHeight(root->left, isBalanced);
-    if (!isBalanced)
-        return 0;
-
-    int rightHeight = checkBalanceAndHeight(root->right, isBalanced);
-    if (!isBalanced)
-        return 0;
-
-    if (abs(leftHeight - rightHeight) > 1)
+    if (currentDepth > maxDepth) {
         isBalanced = false;
+        throw overflow_error("Maximum depth exceeded, possible stack overflow.");
+    }
+
+    // Left subtree height
+    int leftHeight = checkBalanceAndHeight(root->left, isBalanced, maxDepth, currentDepth + 1);
+    if (!isBalanced) return 0;
+
+    // Right subtree height
+    int rightHeight = checkBalanceAndHeight(root->right, isBalanced, maxDepth, currentDepth + 1);
+    if (!isBalanced) return 0;
+
+    // Check balance condition
+    if (abs(leftHeight - rightHeight) > 1) isBalanced = false;
+
+    // Avoid integer overflow when calculating height
+    if (leftHeight > INT_MAX - 1 || rightHeight > INT_MAX - 1) {
+        isBalanced = false;
+        throw overflow_error("Height calculation overflow detected.");
+    }
 
     return max(leftHeight, rightHeight) + 1;
 }
 
-// Function to check if a binary tree is balanced
-bool isTreeBalanced(Node* root) {
+// Wrapper function to check if a binary tree is balanced
+bool isTreeBalanced(Node* root, int maxDepth) {
     bool isBalanced = true;
-    checkBalanceAndHeight(root, isBalanced);
+    try {
+        checkBalanceAndHeight(root, isBalanced, maxDepth, 0);
+    } catch (const overflow_error& e) {
+        cout << "Overflow error: " << e.what() << endl;
+        isBalanced = false;
+    }
     return isBalanced;
 }
 
@@ -59,15 +84,33 @@ int main() {
         root->left = createNode(2);
         root->right = createNode(3);
         cout << "Expected: true (balanced tree)\n";
-        if (isTreeBalanced(root)) {
+        if (isTreeBalanced(root, 1000)) {
             cout << "Actual: true\n";
         } else {
             cout << "Actual: false\n";
         }
-        // Clean up the dynamically allocated memory
-        delete root->left;
-        delete root->right;
-        delete root;
+        deleteTree(root);
+    }
+
+    // Test Case 2: Stack Overflow Handling
+    cout << "\nTest 2: Stack overflow with deep tree\n";
+    {
+        Node* root = createNode(1);
+        Node* current = root;
+        try {
+            const int maxDepth = 1000; // Safeguard to prevent excessive depth
+            for (int i = 0; i < 2000; i++) { // Exceeding maxDepth will trigger an exception
+                current->left = createNode(i);
+                if (current->left == nullptr) throw runtime_error("Memory allocation failed.");
+                current = current->left;
+            }
+            cout << "Testing deep tree...\n";
+            bool result = isTreeBalanced(root, maxDepth);
+            cout << "Result: " << (result ? "true" : "false") << endl;
+        } catch (const exception& e) {
+            cout << "Caught exception: " << e.what() << endl;
+        }
+        deleteTree(root);
     }
 
     // Test Case 3: Integer Overflow
@@ -78,27 +121,28 @@ int main() {
             cout << "Failed to create the root node." << endl;
             return 1;
         }
-        root->left = createNode(2);
-        root->left->left = createNode(3);
-        // The height calculation can overflow without proper checks
-        for(int i = 0; i < 100; i++) {
+        Node* current = root;
+        for (int i = 0; i < 100; i++) {
             Node* node = createNode(i);
             if (node == nullptr) {
                 cout << "Failed to create a node." << endl;
+                deleteTree(root);
                 return 1;
             }
-            node->right = root;
-            root = node;
+            node->right = current;
+            current = node;
         }
         cout << "Testing tree with potential integer overflow...\n";
-        if (isTreeBalanced(root)) {
-            cout << "Result: true (may be incorrect due to overflow)\n";
-        } else {
-            cout << "Result: false\n";
+        try {
+            if (isTreeBalanced(root, 1000)) {
+                cout << "Result: true\n";
+            } else {
+                cout << "Result: false\n";
+            }
+        } catch (const overflow_error& e) {
+            cout << "Caught overflow error: " << e.what() << endl;
         }
-        // Clean up the dynamically allocated memory
-        // (Implement a proper cleanup function to handle the deep tree)
-        // For simplicity, we'll just let the program exit and let the OS clean up
+        deleteTree(current);
     }
 
     // Test Case 4: Invalid Pointer Handling
@@ -113,17 +157,16 @@ int main() {
         root->right = reinterpret_cast<Node*>(0xDEADBEEF); // Invalid pointer
         cout << "Testing with invalid pointer...\n";
         try {
-            if (isTreeBalanced(root)) {
+            if (isTreeBalanced(root, 1000)) {
                 cout << "Result: true\n";
             } else {
                 cout << "Result: false\n";
             }
-        } catch(...) {
+        } catch (...) {
             cout << "Caught an exception!\n";
         }
-        // Clean up the dynamically allocated memory
-        delete root->left;
-        delete root;
+        root->right = nullptr; // Prevent deleteTree from dereferencing invalid pointer
+        deleteTree(root);
     }
 
     return 0;
