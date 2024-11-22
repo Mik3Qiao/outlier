@@ -1,5 +1,15 @@
-mike.qiao@C6D7K0V6DV outlier % g++ -std=c++11 is_balanced_r2.cpp -o is_balanced_r2
-./is_balanced_r2
+mike.qiao@C6D7K0V6DV outlier % g++ -std=c++11 is_balanced_r1.cpp -o is_balanced_r1
+./is_balanced_r1
+
+Test 1: Basic working case
+Expected: true (balanced tree)
+Actual: true
+
+Test 2: Stack overflow with deep tree
+Testing deep tree...
+zsh: segmentation fault  ./is_balanced_r1
+mike.qiao@C6D7K0V6DV outlier % g++ -std=c++11 is_balanced_r1.cpp -o is_balanced_r1
+./is_balanced_r1
 
 Test 1: Basic working case
 Expected: true (balanced tree)
@@ -7,8 +17,8 @@ Actual: true
 
 Test 3: Integer overflow
 Testing tree with potential integer overflow...
-Result: 0 (may be incorrect due to overflow)
+Result: false (may be incorrect due to overflow)
 
 Test 4: Invalid pointer handling
 Testing with invalid pointer...
-zsh: segmentation fault  ./is_balanced_r2
+zsh: segmentation fault  ./is_balanced_r1

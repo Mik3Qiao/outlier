@@ -73,26 +73,26 @@ int main() {
         // Memory leak: No cleanup!
     }
 
-    // Test Case 2: Stack Overflow with Deep Tree
-    cout << "\nTest 2: Stack overflow with deep tree\n";
-    {
-        Node* root = createNode(1);
-        Node* current = root;
-        // Create a very deep tree to force stack overflow
-        try {
-            for(int i = 2; i <= 1000000; i++) {
-                current->left = createNode(i);
-                current = current->left;
-            }
-            cout << "Testing deep tree...\n";
-            int height = 0;
-            bool result = isTreeBalanced(root, height);
-            cout << "Should not reach here due to stack overflow\n";
-        } catch(const std::exception& e) {
-            cout << "Caught exception: " << e.what() << "\n";
-        }
-        // Memory leak: No cleanup!
-    }
+    // // Test Case 2: Stack Overflow with Deep Tree
+    // cout << "\nTest 2: Stack overflow with deep tree\n";
+    // {
+    //     Node* root = createNode(1);
+    //     Node* current = root;
+    //     // Create a very deep tree to force stack overflow
+    //     try {
+    //         for(int i = 2; i <= 1000000; i++) {
+    //             current->left = createNode(i);
+    //             current = current->left;
+    //         }
+    //         cout << "Testing deep tree...\n";
+    //         int height = 0;
+    //         bool result = isTreeBalanced(root, height);
+    //         cout << "Should not reach here due to stack overflow\n";
+    //     } catch(const std::exception& e) {
+    //         cout << "Caught exception: " << e.what() << "\n";
+    //     }
+    //     // Memory leak: No cleanup!
+    // }
 
     // Test Case 3: Integer Overflow
     cout << "\nTest 3: Integer overflow\n";
