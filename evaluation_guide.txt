@@ -1,0 +1,111 @@
+evaluation guide:
+
+### Instruction Following (required):
+    P0
+    
+    No Issue (1):
+
+    The response fulfills the primary request and all of the constraints.
+    The response may have incorrect implementation (e.g., mistakes in code) if it shows a deep understanding of the prompt request and constraints in the written text.
+    The response adeptly handles any potential ambiguity in the prompt.
+    The response fully adheres to all the prompt's requirements/constraints and doesn't do more than the user requested.
+    Minor Issue (2):
+
+    The response fulfills the primary request but does not entirely adhere to all the constraints.
+    The response could have better handled the ambiguity of the prompt.
+    Major Issue (3):
+
+    The response fails to fulfill the primary request OR fulfills the primary request but fails to adhere to any constraints.
+
+### Accuracy (required):
+    P0
+    
+    No Issue (1):
+
+    - The code runs error-free, produces the correct output, and follows best practices. All text and comments are accurate, and the response is contextually appropriate with any previous errors fixed.
+
+    All meaningful edge cases are covered. The response includes thorough validation for expected inputs and error handling for invalid data, ensuring robustness and resilience to common input errors. Example: The function calculate_discount(price, discount_percentage) validates all inputs. It checks that price and discount_percentage are positive numbers, ensures discount_percentage does not exceed 100%, and returns a clear error message if values are out of expected ranges or of incorrect types (e.g., strings).
+
+    Minor Issue (2):
+
+    The code runs but has minor warnings or low-risk security issues. The content is mostly accurate, but some statements are unclear or make unproven claims. Previous errors remain but don't affect the current response.
+
+    Some edge cases are covered. The response handles most expected inputs but misses certain edge cases, which could lead to potential errors or exceptions under specific conditions.
+
+    Major Issue (3):
+
+    The function calculate_discount(price, discount_percentage) includes basic validation, such as checking that price and discount_percentage are positive numbers. However, it lacks checks for certain edge cases, such as ensuring discount_percentage does not exceed 100% or verifying that inputs are numeric. The code doesn’t run due to logic errors, produces incorrect output, or has major security flaws. The response includes false claims, lacks context, and previous errors were not fixed, making the issues worse.
+
+    No edge cases are covered. The response lacks validation for all inputs, making it vulnerable to errors when faced with unexpected or invalid data inputs.
+
+    The function calculate_discount(price, discount_percentage) performs no validation on its inputs, assuming price and discount_percentage are always valid and within expected ranges. This could cause runtime errors or incorrect results if given invalid inputs, such as negative numbers, discount_percentage over 100%, or non-numeric types, making the function unreliable.
+
+    We’ve added input validation as a criterion under the Accuracy rating, which should be evaluated even if the prompt does not specifically request it. Here are the details:
+
+    Major Issues: No edge cases are covered. The response lacks input validation entirely, making it vulnerable to errors with unexpected or invalid data.
+    Minor Issues: Some edge cases are covered. The response handles most expected inputs but misses certain edge cases, which could lead to potential errors in specific conditions.
+    No Issues: All meaningful edge cases are covered. The response includes comprehensive validation for expected inputs and handles invalid data gracefully, ensuring robustness.
+
+Optimality and Efficiency (required)
+
+    No Issue (1):
+
+    The code is highly performant and is optimized even for edge cases.
+    The code is sufficiently performant if the prompt does not require the best performance and if a more efficient option would require much more complexity.
+    The code adheres to common practices and standards.
+    Minor Issue (2):
+
+    The code is relatively performant, but some low-effort optimizations could still be done.
+    The code mostly adheres to common practices and standards.
+    The code may not be scalable in real-world large-dataset use cases.
+    Major Issue (3):
+
+    The code exhibits severe performance and efficiency issues.
+    The code does not adhere to common practices and standards.
+
+Presentation (required)
+
+    No Issue (1):
+    The code has an adequate amount of documentation, including in-code comments.
+    The response is clear, concise, and well-structured.
+    Variables and functions are named with readability in mind.
+    All modifications are documented in the code or in a written explanation outside the code.
+    Test outputs include a comment with the expected response.
+    Complex processes are explained clearly using bulleted lists.
+    Key terms are highlighted in bold, whereas titles, actions, etc., are italicized.
+    The response doesn’t provide multiple redundant code solutions to solve the same problem.
+    Multiple code blocks are wrapped in triple backticks with the correct language specified after the upper backticks to ensure proper indentation and formatting.
+    Markdown syntax is correct and represents a proper hierarchy.
+    White space and line breaks are used to improve readability and separate content sections.
+    Tables are constructed with hyphens and pipes and are correctly lined up.
+    Code readability is prioritized, ensuring well-structured and easy-to-understand logic.
+    Code includes structured functions, with logic encapsulated in functions and called with if __name__ == "__main__": blocks to enhance modularity.
+
+    Minor Issue (2):
+    The documentation is sufficient to understand the code, but additional details would be helpful.
+    The response contains a few language/mechanic errors, but they do not impact readability.
+    The response readability can be improved with better formatting.
+    The code contains the programming language tag.
+    Variables and function names are easy to understand.
+    Some adjustments to formatting and structure could improve clarity, such as adding more bullet points or logical sections.
+    Functions are included but may not be modular enough, requiring some reorganization.
+    The code has most documentation, but a few explanations are missing, making it harder to follow in places.
+
+    Major Issue (3):
+    Documentation is missing or insufficient even to understand the code.
+    The response has poor readability due to a lack of structure or formatting.
+    The code is missing programming language tags.
+    The code has vague or unclear variable or function names.
+    The code is disorganized and difficult to follow.
+    Explanations are absent, leaving the reader unclear about key decisions or steps in the code.
+    Code is poorly structured, making it challenging to integrate or reuse.
+
+Up-to-Date (required)
+
+    NA (0):
+    The code does not call on any libraries or functions.
+    Up-to-Date(1):
+    The code uses a maintained library or function that is an older version or less efficient but still commonly used.
+    The code uses the most fresh APIs, libraries, or functions available to solve problems efficiently.
+    Out-of-Date(2):
+    The code uses a deprecated API, library, or function or ones with known inefficiencies or vulnerabilities, or are generally not recommended.
