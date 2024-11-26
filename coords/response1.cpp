@@ -35,20 +35,6 @@ bool isValidLongitude(double longitude) {
     return longitude >= MIN_LONGITUDE && longitude <= MAX_LONGITUDE;
 }
 
-// int main() {
-//     double latitude = getDoubleInput("Enter latitude: ");
-//     double longitude = getDoubleInput("Enter longitude: ");
-
-//     if (!isValidLatitude(latitude)) {
-//         std::cout << "Invalid latitude. Latitude should be between " << MIN_LATITUDE << " and " << MAX_LATITUDE << ".\n";
-//     } else if (!isValidLongitude(longitude)) {
-//         std::cout << "Invalid longitude. Longitude should be between " << MIN_LONGITUDE << " and " << MAX_LONGITUDE << ".\n";
-//     } else {
-//         std::cout << "The coordinates are valid.\n";
-//     }
-
-//     return 0;
-// }
 
 void runTests() {
     std::cout << "\nRunning validation tests...\n\n";
@@ -97,25 +83,7 @@ void runTests() {
 }
 
 int main() {
-    // Original main code
-    double latitude = getDoubleInput("Enter latitude: ");
-    double longitude = getDoubleInput("Enter longitude: ");
-    
-    if (!isValidLatitude(latitude)) {
-        std::cout << "Invalid latitude. Latitude should be between " << MIN_LATITUDE << " and " << MAX_LATITUDE << ".\n";
-    } else if (!isValidLongitude(longitude)) {
-        std::cout << "Invalid longitude. Longitude should be between " << MIN_LONGITUDE << " and " << MAX_LONGITUDE << ".\n";
-    } else {
-        std::cout << "The coordinates are valid.\n";
-    }
-
-    // Run the tests
-    std::cout << "\nWould you like to run the tests? (y/n): ";
-    char runTestsChoice;
-    std::cin >> runTestsChoice;
-    if(runTestsChoice == 'y' || runTestsChoice == 'Y') {
-        runTests();
-    }
+    runTests();
     
     return 0;
 }
