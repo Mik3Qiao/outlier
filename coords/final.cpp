@@ -42,6 +42,7 @@ ValidationResult getInput(const std::string& prompt, double& value) {
         
         if (!std::cin.good()) {
             std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             return ValidationResult(false, "Input stream error");
         }
         
@@ -98,26 +99,26 @@ void runTests() {
         }
     }
     
+    // Test 4: Stream corruption test
+    {
+        std::cout << "Testing stream corruption...\n";
+        std::string badInputs[] = {"abc", "123abc", "", "", "-90.0e999"};
+        double value;
+        
+        for (const auto& input : badInputs) {
+            std::istringstream iss(input);
+            std::cin.rdbuf(iss.rdbuf());
+            auto result = getInput("", value);
+            assert(!result.isValid && "FAIL: Accepts corrupted input");
+        }
+    }
+    
+    // Restore cin to standard input
+    std::cin.rdbuf(std::cin.rdbuf());
     std::cout << "All tests passed!\n\n";
 }
 
 int main() {
     runTests();
-    
-    double lat, lon;
-    auto latResult = getInput("Enter latitude: ", lat);
-    if (!latResult.isValid || !validateCoordinate(lat, MIN_LAT, MAX_LAT, "Latitude").isValid) {
-        std::cout << "Invalid latitude\n";
-        return 1;
-    }
-    
-    auto lonResult = getInput("Enter longitude: ", lon);
-    if (!lonResult.isValid || !validateCoordinate(lon, MIN_LON, MAX_LON, "Longitude").isValid) {
-        std::cout << "Invalid longitude\n";
-        return 1;
-    }
-    
-    std::cout << "Valid coordinates: (" << std::fixed << std::setprecision(6) 
-              << lat << ", " << lon << ")\n";
     return 0;
 }

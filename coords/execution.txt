@@ -26,3 +26,13 @@ Test 1: Special floating point values
 Test 2: Boundary value tests
 Assertion failed: (!isValidLatitude(almostMinLatitude) && "FAIL: Program accepts latitude slightly below minimum"), function runTests, file response2.cpp, line 52.
 zsh: abort      ./response2
+
+g++ -std=c++11 final.cpp -o final
+./final
+
+mike.qiao@C6D7K0V6DV coords % g++ -std=c++11 final.cpp -o final
+./final
+
+Running validation tests...
+Testing stream corruption...
+All tests passed!

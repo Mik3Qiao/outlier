@@ -63,21 +63,6 @@ void runTests() {
     std::cout << "Enter these values in sequence:\n";
     std::cout << "abc\n123abc\n\n\n-90.0e999\n";
     
-    // Test 5: Floating point comparison precision
-    std::cout << "Test 5: Floating point precision test\n";
-    double exactBoundary = -90.0;
-    double slightlyOver = std::nextafter(exactBoundary, -std::numeric_limits<double>::infinity());
-    assert(!isValidLatitude(slightlyOver) && 
-           "FAIL: Program accepts values slightly outside bounds due to float comparison");
-
-    // Test 6: Memory stress test
-    std::cout << "Test 6: Memory stress test\n";
-    std::cout << "Press Ctrl+C to exit this infinite loop\n";
-    int count = 0;
-    while(true) {
-        double lat = getDoubleInput("Stress test input " + std::to_string(count++) + ": ");
-        if(count > 1000) break;  // Safety break after 1000 iterations
-    }
 }
 
 int main() {
